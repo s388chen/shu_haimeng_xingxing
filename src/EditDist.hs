@@ -45,19 +45,11 @@ prop_editdistEmpty xs = editDistance xs [] == length xs
 prop_editdistReverse :: [Char] -> [Char] -> Bool
 prop_editdistReverse xs ys = editDistance xs ys == editDistance ys xs
 
--- fourth quickcheck for The edit distance between any two strings is the same as the edit distance between the two strings with the first character removed.
-prop_editdistRemoveFirst :: [Char] -> [Char] -> Bool
-prop_editdistRemoveFirst xs ys = editDistance xs ys == editDistance (tail xs) (tail ys)
-
--- fifth quickcheck for The edit distance between any two strings is the same as the edit distance between the two strings with the last character removed.
-prop_editdistRemoveLast :: [Char] -> [Char] -> Bool
-prop_editdistRemoveLast xs ys = editDistance xs ys == editDistance (init xs) (init ys)
-
--- sixth quickcheck for After applying n edits to a string x, the distance between the edited string and x should be at most n.
+-- fourth quickcheck for After applying n edits to a string x, the distance between the edited string and x should be at most n.
 prop_editdistMax :: [Char] -> Int -> Bool
 prop_editdistMax xs n = editDistance xs (take n xs) <= n
 
--- seventh quickcheck for No two strings have a negative edit distance.
+-- fifth quickcheck for No two strings have a negative edit distance.
 prop_editdistNegative :: [Char] -> [Char] -> Bool
 prop_editdistNegative xs ys = editDistance xs ys >= 0
 
@@ -69,10 +61,6 @@ qc = do
   quickCheckN 100 prop_editdistEmpty
   putStrLn "prop_editdistReverse"
   quickCheckN 100 prop_editdistReverse
-  putStrLn "prop_editdistRemoveFirst"
-  quickCheckN 100 prop_editdistRemoveFirst
-  putStrLn "prop_editdistRemoveLast"
-  quickCheckN 100 prop_editdistRemoveLast
   putStrLn "prop_editdistMax"
   quickCheckN 100 prop_editdistMax
   putStrLn "prop_editdistNegative"
