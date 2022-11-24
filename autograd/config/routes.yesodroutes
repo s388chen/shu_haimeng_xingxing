@@ -13,3 +13,4 @@
 
 /profile ProfileR GET
 /word GetWordR GET
+/word/#Text GetAutoCorrectR GET

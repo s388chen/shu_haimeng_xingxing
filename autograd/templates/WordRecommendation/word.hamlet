@@ -1,5 +1,5 @@
 <h1> Our word recommendation
 
-<form method=post action=@{GetWordR} enctype=#{formEnctype}>
+<form method=get action=@{GetWordR} enctype=#{formEnctype}>
     ^{formWidget}
     <button class="btn btn-default"> autocorrect
