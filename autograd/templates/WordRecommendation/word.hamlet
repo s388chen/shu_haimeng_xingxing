@@ -1,5 +1,6 @@
 <h1> Our word recommendation
 
 <form method=get action=@{GetWordR} enctype=#{formEnctype}>
-    ^{formWidget}
-    <button class="btn btn-default"> autocorrect
+    ^{searchWidget}
+    <br>
+    <button class="btn btn-default"> autocorrect 

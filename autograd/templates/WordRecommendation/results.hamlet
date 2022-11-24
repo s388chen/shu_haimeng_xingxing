@@ -1,0 +1,5 @@
+$if not $ null searchResults
+    <h1>Results
+    $forall result <- searchResults
+        <div .result>
+            <a href="/word/#{resultTitle result}">#{resultTitle result}

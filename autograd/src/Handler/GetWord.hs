@@ -1,18 +1,24 @@
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
 module Handler.GetWord where
 
 import Import
 
-newtype Term = Term
-  {term :: Text}
+newtype Result = Result
+  { resultTitle :: Text
+  }
 
-searchForm :: AForm Handler Term
-searchForm = Term <$> areq textField textSettings Nothing
+searchForm :: Html -> MForm Handler (FormResult Text, Widget)
+searchForm = renderDivs $ areq (searchField True) textSettings Nothing
   where
     textSettings =
       FieldSettings
@@ -28,6 +34,11 @@ searchForm = Term <$> areq textField textSettings Nothing
 
 getGetWordR :: Handler Html
 getGetWordR = do
-  (formWidget, formEnctype) <- generateFormPost $ renderBootstrap3 BootstrapBasicForm searchForm
+  ((formRes, searchWidget), formEnctype) <- runFormGet searchForm
+  searchResults <-
+    case formRes of
+      FormSuccess qstring -> return [Result {resultTitle = qstring}]
+      _ -> return []
   defaultLayout $ do
     $(widgetFile "WordRecommendation/word")
+    $(widgetFile "WordRecommendation/results")
