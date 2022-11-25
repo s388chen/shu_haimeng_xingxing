@@ -29,11 +29,11 @@ share
   [mkPersist sqlSettings]
   [persistLowerCase|
 Words sql=words id=(word, type)
-  word String sql=word
-  type String sql=type
-  sdex String sql=sdex
+  word Text sql=word
+  type Text sql=type
+  sdex Text sql=sdex
   wlen Int sql=wlen
-  defn String sql=defn
+  defn Text sql=defn
   deriving Show
 |]
 

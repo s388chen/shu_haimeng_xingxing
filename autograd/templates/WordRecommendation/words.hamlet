@@ -1,0 +1,12 @@
+<div .col-lg-4.col-lg-offset-1>
+$forall word <- wordPs
+    <div .bs-callout.bs-callout-info>
+        <small>
+            Here is #{wordId}'s with #{wordsType $ entityVal word} type.
+        <ul>
+            <li>Word: 
+                #{wordsWord $ entityVal word}
+            <li>Type: 
+                #{wordsType $ entityVal word}
+            <li>Example: 
+                #{wordsDefn $ entityVal word}
