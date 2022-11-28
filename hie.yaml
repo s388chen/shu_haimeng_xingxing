@@ -1,9 +1,8 @@
 cradle:
   stack:
     - path: ./test
-      component: "project-cis5520:test:project-cis5520-test"
+      component: "autograd:test:autograd-test"
     - path: ./src
-      component: "project-cis5520:lib"
+      component: "autograd:lib"
     - path: ./app
-      component: "project-cis5520:exe:project-cis5520-exe"
-
+      component: "autograd:exe:autograd-exe"

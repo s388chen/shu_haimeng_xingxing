@@ -1,37 +1,43 @@
-# project-cis5520
+## Haskell Setup
 
-This is an "Empty project" for Haskell. It is configured in the same way as
-the lecture demo and homework assignments for CIS 5520, but contains no
-code. Feel free to use this project for experimentation!
+1. If you haven't already, [install Stack](https://haskell-lang.org/get-started)
+	* On POSIX systems, this is usually `curl -sSL https://get.haskellstack.org/ | sh`
+2. Install the `yesod` command line tool: `stack install yesod-bin --install-ghc`
+3. Build libraries: `stack build`
 
-If you want to change the name of this project, look for all occurrences of
-`project-cis5520` in the `project-cis5520.cabal` file and in the `hie.yaml` 
-file. (And change the name of the cabal file to match your new name!)
+If you have trouble, refer to the [Yesod Quickstart guide](https://www.yesodweb.com/page/quickstart) for additional detail.
 
-## Module organization
+## Development
 
-Haskell packages typically divide their source code into three separate places:
-  - The bulk of your code should be developed as a reusable library in 
-    modules in the `src` directory. We've created [Lib.hs](src/Lib.hs) 
-    for you to get started. You can add additional modules here.
-  
-  - The entry point for your executable is in [Main.hs](app/Main.hs). 
-  
-  - All of your test cases should be in [the test directory](test/Spec.hs).
+Start a development server with:
 
-## Building, running, and testing
+```
+stack exec -- yesod devel
+```
 
-This project compiles with `stack build`. 
-You can run the main executable with `stack run`.
-You can run the tests with `stack test`. 
+As your code changes, your site will be automatically recompiled and redeployed to localhost.
 
-Finally, you can start a REPL with `stack ghci`.
+## Tests
 
-## Importing additional libraries
+```
+stack test --flag autograd:library-only --flag autograd:dev
+```
 
-This project is designed to run with stackage: you can easily use any library
-in https://www.stackage.org/lts-19.19 by adding an entry to the
-`build-depends` list of the `common-stanza` in the cabal file. If you want to
-use a library that is not on stackage, you'll need to update the common-stanza
-*and* add information to `stack.yaml` about where to find that library.
+(Because `yesod devel` passes the `library-only` and `dev` flags, matching those flags means you don't need to recompile between tests and development, and it disables optimization to speed up your test compile times).
 
+## Documentation
+
+* Read the [Yesod Book](https://www.yesodweb.com/book) online for free
+* Check [Stackage](http://stackage.org/) for documentation on the packages in your LTS Haskell version, or [search it using Hoogle](https://www.stackage.org/lts/hoogle?q=). Tip: Your LTS version is in your `stack.yaml` file.
+* For local documentation, use:
+	* `stack haddock --open` to generate Haddock documentation for your dependencies, and open that documentation in a browser
+	* `stack hoogle <function, module or type signature>` to generate a Hoogle database and search for your query
+* The [Yesod cookbook](https://github.com/yesodweb/yesod-cookbook) has sample code for various needs
+
+## Getting Help
+
+* Ask questions on [Stack Overflow, using the Yesod or Haskell tags](https://stackoverflow.com/questions/tagged/yesod+haskell)
+* Ask the [Yesod Google Group](https://groups.google.com/forum/#!forum/yesodweb)
+* There are several chatrooms you can ask for help:
+	* For IRC, try Freenode#yesod and Freenode#haskell
+	* [Functional Programming Slack](https://fpchat-invite.herokuapp.com/), in the #haskell, #haskell-beginners, or #yesod channels.

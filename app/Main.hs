@@ -1,6 +1,5 @@
-module Main where
-
-import Lib
+import Application (appMain)
+import Prelude (IO)
 
 main :: IO ()
-main = putStrLn someFunc
+main = appMain

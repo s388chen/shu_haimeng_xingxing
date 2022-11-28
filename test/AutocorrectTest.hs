@@ -1,6 +1,15 @@
+module AutocorrectTest where
+
+import Data.List
+import Data.List.Extras.Argmax (argmax)
+import qualified Data.Map.Strict as Map
+import Data.Set as S (fromList, toList)
+import DictionaryDB
+import Handler.Autocorrect
 import Test.HUnit (Assertion, Counts, Test (..), assert, runTestTT, (~:), (~?=))
 import Test.QuickCheck (Arbitrary (..), Gen, Property, Testable (..), (==>))
 import qualified Test.QuickCheck as QC
+import Prelude
 
 -- an empty map should return the same word
 prop_correction :: String -> Bool
@@ -12,7 +21,7 @@ prop_candidates word = length (candidates Map.empty word) == 1
 
 -- quickcheck for known
 prop_known :: String -> Bool
-prop_known word = known Map.empty [word] == null
+prop_known word = null (known Map.empty [word])
 
 -- quickcheck for edits1
 prop_edits1 :: String -> Bool
@@ -27,13 +36,13 @@ quickCheckN n = QC.quickCheck . QC.withMaxSuccess n
 
 qc :: IO ()
 qc = do
-  Import.putStrLn "prop_correction"
+  putStrLn "prop_correction"
   quickCheckN 100 prop_correction
-  Import.putStrLn "prop_candidates"
+  putStrLn "prop_candidates"
   quickCheckN 100 prop_candidates
-  Import.putStrLn "prop_known"
+  putStrLn "prop_known"
   quickCheckN 100 prop_known
-  Import.putStrLn "prop_edits1"
+  putStrLn "prop_edits1"
   quickCheckN 100 prop_edits1
-  Import.putStrLn "prop_edits2"
+  putStrLn "prop_edits2"
   quickCheckN 100 prop_edits2
