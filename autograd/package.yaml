@@ -4,6 +4,8 @@ version: "0.0.0"
 dependencies:
 
 - base >=4.9.1.0 && <5
+- HUnit 
+- QuickCheck
 - yesod >=1.6 && <1.7
 - yesod-core >=1.6 && <1.7
 - yesod-auth >=1.6 && <1.7

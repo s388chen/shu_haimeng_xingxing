@@ -18,7 +18,7 @@ import Import
 getGetAutoCorrectR :: Text -> Handler Html
 getGetAutoCorrectR wordId =
   do
-    wordPs <- runSimDB $ selectList [WordsWord ==. wordId] []
+    wordPs <- runSimDB $ selectList [WordsWord ==. wordId] [] --to be tested
     -- liftIO (print words)
     defaultLayout $
       do

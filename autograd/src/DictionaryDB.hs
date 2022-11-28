@@ -39,7 +39,7 @@ Words sql=words id=(word, type)
 
 pravasConf =
   SqliteConf
-    { sqlDatabase = "/Users/irenekxx/Desktop/mcit/552/shu_haimeng_xingxing/autograd/config/Dictionary.db",
+    { sqlDatabase = "C:/Users/chens/CIS5520/shu_haimeng_xingxing/autograd/config/Dictionary.db",
       sqlPoolSize = 2
     }
 
