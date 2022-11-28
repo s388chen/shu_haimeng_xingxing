@@ -11,11 +11,8 @@
 
 module Handler.GetWord where
 
+import Handler.Autocorrect
 import Import
-
-newtype Result = Result
-  { resultTitle :: Text
-  }
 
 searchForm :: Html -> MForm Handler (FormResult Text, Widget)
 searchForm = renderDivs $ areq (searchField True) textSettings Nothing
@@ -34,10 +31,11 @@ searchForm = renderDivs $ areq (searchField True) textSettings Nothing
 
 getGetWordR :: Handler Html
 getGetWordR = do
+  wm <- wordsMap
   ((formRes, searchWidget), formEnctype) <- runFormGet searchForm
   searchResults <-
     case formRes of
-      FormSuccess qstring -> return [Result {resultTitle = qstring}]
+      FormSuccess qstring -> return $ noDupCandidates $ candidates wm (unpack qstring)
       _ -> return []
   defaultLayout $ do
     $(widgetFile "WordRecommendation/word")

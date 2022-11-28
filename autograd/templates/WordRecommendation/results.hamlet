@@ -2,4 +2,4 @@ $if not $ null searchResults
     <h2>Results
     $forall result <- searchResults
         <div .result>
-            <a href="/word/#{resultTitle result}">#{resultTitle result}
+            <a href="/word/#{result}">#{result}
