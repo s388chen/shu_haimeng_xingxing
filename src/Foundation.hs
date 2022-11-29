@@ -127,6 +127,12 @@ instance Yesod App where
                   menuItemRoute = ProfileR,
                   menuItemAccessCallback = isJust muser
                 },
+            NavbarLeft $
+              MenuItem
+                { menuItemLabel = "Word",
+                  menuItemRoute = GetWordR,
+                  menuItemAccessCallback = isJust muser
+                },
             NavbarRight $
               MenuItem
                 { menuItemLabel = "Login",
@@ -179,6 +185,7 @@ instance Yesod App where
   isAuthorized _ _ = return Authorized
   -- the profile route requires that the user is authenticated, so we
   -- delegate to that function
+
   isAuthorized ProfileR _ = isAuthenticated
 
   -- This function creates static content files in the static folder
@@ -228,6 +235,8 @@ instance YesodBreadcrumbs App where
   breadcrumb HomeR = return ("Home", Nothing)
   breadcrumb (AuthR _) = return ("Login", Just HomeR)
   breadcrumb ProfileR = return ("Profile", Just HomeR)
+  breadcrumb GetWordR = return ("word", Just HomeR)
+  breadcrumb (GetAutoCorrectR text) = return ("word/" ++ text, Just HomeR)
   breadcrumb _ = return ("home", Nothing)
 
 -- How to run database actions.
@@ -261,21 +270,22 @@ instance YesodAuth App where
     (MonadHandler m, HandlerSite m ~ App) =>
     Creds App ->
     m (AuthenticationResult App)
-  authenticate creds = liftHandler $ runDB $ do
-    x <- getBy $ UniqueUser $ credsIdent creds
-    case x of
-      Just (Entity uid _) -> return $ Authenticated uid
-      Nothing ->
-        Authenticated
-          <$> insert
-            User
-              { userIdent = credsIdent creds,
-                userPassword = Nothing
-              }
+  authenticate creds = liftHandler $
+    runDB $ do
+      x <- getBy $ UniqueUser $ credsIdent creds
+      case x of
+        Just (Entity uid _) -> return $ Authenticated uid
+        Nothing ->
+          Authenticated
+            <$> insert
+              User
+                { userIdent = credsIdent creds,
+                  userPassword = Nothing
+                }
 
   -- You can add other plugins like Google Email, email or OAuth here
   authPlugins :: App -> [AuthPlugin App]
-  authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
+  authPlugins app = authOpenId Claimed [] : extraAuthPlugins
     where
       -- Enable authDummy login if enabled.
       extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
