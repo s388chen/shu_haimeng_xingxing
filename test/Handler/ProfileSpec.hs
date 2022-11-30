@@ -10,7 +10,7 @@ spec = withApp $ do
   describe "Profile page" $ do
     it "asserts no access to my-account for anonymous users" $ do
       get ProfileR
-      statusIs 403
+      statusIs 303
 
     it "asserts access to my-account for authenticated users" $ do
       userEntity <- createUser "foo"

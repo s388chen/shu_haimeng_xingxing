@@ -183,6 +183,7 @@ test-suite autograd-test
     , fast-logger >=2.2 && <3.2
     , file-embed
     , foreign-store
+    , hedgehog
     , hjsmin >=0.1 && <0.3
     , hspec >=2.0.0
     , http-client-tls ==0.3.*
@@ -196,6 +197,9 @@ test-suite autograd-test
     , persistent-template >=2.5 && <2.14
     , safe
     , shakespeare ==2.0.*
+    , tasty
+    , tasty-discover
+    , tasty-hedgehog
     , template-haskell
     , text >=0.11 && <2.0
     , time
