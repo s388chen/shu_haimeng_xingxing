@@ -96,6 +96,7 @@ executable autograd
   main-is: main.hs
   other-modules:
       DevelMain
+      Main
       Paths_autograd
   hs-source-dirs:
       app
