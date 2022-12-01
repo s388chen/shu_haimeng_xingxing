@@ -45,6 +45,8 @@ dependencies:
 - wai
 - foreign-store
 - list-extras
+- shellwords >=0.1.3.0
+- dotenv
 
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.

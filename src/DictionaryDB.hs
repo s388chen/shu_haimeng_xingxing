@@ -23,6 +23,7 @@ import Data.Text
 import Database.Persist
 import Database.Persist.Sqlite
 import Database.Persist.TH
+import System.Environment (getEnv)
 import Prelude
 
 share
@@ -37,11 +38,7 @@ Words sql=words id=(word, type)
   deriving Show
 |]
 
-pravasConf =
-  SqliteConf
-    { sqlDatabase = "C:/Users/chens/CIS5520/shu_haimeng_xingxing/config/Dictionary.db",
-      sqlPoolSize = 2
-    }
-
-runSimDB f = runSqlite (sqlDatabase pravasConf) $ do
-  f
+runSimDB f = do
+  path <- liftIO $ pack <$> getEnv "Dictionary_DB"
+  runSqlite path $ do
+    f

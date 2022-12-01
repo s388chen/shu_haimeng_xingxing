@@ -24,6 +24,10 @@ module Application
   )
 where
 
+-- Import all relevant handler modules here.
+-- Don't forget to add new modules to your cabal file!
+
+import Configuration.Dotenv (defaultConfig, loadFile)
 import Control.Monad.Logger (liftLoc, runLoggingT)
 import Database.Persist.Sqlite
   ( createSqlitePool,
@@ -31,9 +35,6 @@ import Database.Persist.Sqlite
     sqlDatabase,
     sqlPoolSize,
   )
--- Import all relevant handler modules here.
--- Don't forget to add new modules to your cabal file!
-
 import Handler.Comment
 import Handler.Common
 import Handler.GetAutoCorrect
@@ -169,7 +170,9 @@ getAppSettings = loadYamlSettings [configSettingsYml] [] useEnv
 
 -- | main function for use by yesod devel
 develMain :: IO ()
-develMain = develMainHelper getApplicationDev
+develMain = do
+  _ <- loadFile defaultConfig
+  develMainHelper getApplicationDev
 
 -- | The @main@ function for an executable running this site.
 appMain :: IO ()
