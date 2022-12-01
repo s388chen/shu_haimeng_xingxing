@@ -17,6 +17,19 @@ stack exec -- yesod devel
 
 As your code changes, your site will be automatically recompiled and redeployed to localhost.
 
+### Useful commands
+Executable named yesod not found on path
+
+```
+stack build yesod-bin
+```
+
+Add new handler
+
+```
+stack exec -- yesod add-handler
+```
+
 ## Tests
 
 ```
