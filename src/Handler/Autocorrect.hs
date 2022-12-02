@@ -9,7 +9,14 @@ import qualified Data.Map.Strict as Map
 import Data.Set as S (fromList, toList, union)
 import DictionaryDB
 import GHC.IO
-import Import hiding (drop, filter, group, head, length, map, null, sort, splitAt, tail, (++), (.))
+import Import
+  ( Entity (entityVal),
+    Handler,
+    Textual (toLower),
+    fromMaybe,
+    selectList,
+    unpack,
+  )
 import Prelude hiding (words)
 
 wordsMap :: Handler (Map.Map String Int)
@@ -26,7 +33,7 @@ wordsMap = do
 --     text = unsafePerformIO $ Prelude.readFile "big.txt"
 --     words' = filter (not . null) . splitWhen (not . isAlpha) $ map Data.Char.toLower text
 
--- >>> Data.Map.lookup "a" wordsMap
+-- >>> Data.Map.lookup "a" wordsMap2
 -- Just 53
 
 -- | Probability of @word@.
@@ -71,17 +78,17 @@ known wm words' = [w | w <- words', Map.member w wm]
 -- | 26n alterations, and 26(n+1) insertions,
 -- | for a total of 54n+25 (with duplicates removed)
 edits1 :: String -> [String]
-edits1 word = S.toList (deletes `S.union` transposes `S.union` replaces `S.union` inserts)
+edits1 word = deletes ++ transposes ++ replaces ++ inserts
   where
     letters = "abcdefghijklmnopqrstuvwxyz"
     splits = [splitAt i word | i <- [1 .. length word]]
-    deletes = S.fromList [l ++ tail r | (l, r) <- splits, (not . null) r]
-    transposes = S.fromList [l ++ r !! 1 : head r : drop 2 r | (l, r) <- splits, length r > 1]
-    replaces = S.fromList [l ++ c : tail r | (l, r) <- splits, (not . null) r, c <- letters]
-    inserts = S.fromList [l ++ c : r | (l, r) <- splits, c <- letters]
+    deletes = [l ++ tail r | (l, r) <- splits, (not . null) r]
+    transposes = [l ++ r !! 1 : head r : drop 2 r | (l, r) <- splits, length r > 1]
+    replaces = [l ++ c : tail r | (l, r) <- splits, (not . null) r, c <- letters]
+    inserts = [l ++ c : r | (l, r) <- splits, c <- letters]
 
--- >>> length (edits1 "somthing")
--- 442
+-- >>> length( noDuplicates (edits1 "somthing"))
+-- Variable not in scope: noDuplicates :: [String] -> t0 a0
 
 -- | All edits that are two edits away from @word@.
 edits2 :: String -> [String]
