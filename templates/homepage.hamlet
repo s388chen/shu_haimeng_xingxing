@@ -2,11 +2,11 @@
     <div .container>
         <div .row>
             <h1 .header>
-                Yesod—a modern framework for blazing fast websites
+                Autocorrection 
             <h2>
-                Fast, stable & spiced with great community
-            <a href="http://www.yesodweb.com/book/" .btn.btn-info.btn-lg>
-                Read the Book
+                a Haskell-based spell checker
+            <a href="https://www.github.com/s388chen/shu_haimeng_xingxing" .btn.btn-info.btn-lg>
+                Github repository
 
 <div .container>
     <!-- Starting
@@ -18,10 +18,10 @@
                     <h1 #start>Starting
 
                     <p>
-                        Now that you have a working project you should use the
-                        <a href=http://www.yesodweb.com/book/>Yesod book</a> to learn more.
+                        Now that you can try our spell checker
+                        <a href=http://www.localhost:3000/word> Demo </a> to learn more.
                     <p>
-                        You can also use this scaffolded site to explore some concepts, and best practices.
+                        You can also <a href="@{AuthR LoginR}"> login </a> to explore more features.
 
                     <ul .list-group>
 
