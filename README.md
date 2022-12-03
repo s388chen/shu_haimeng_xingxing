@@ -30,6 +30,13 @@ Add new handler
 stack exec -- yesod add-handler
 ```
 
+## Others
+
+To run this server, user should add a dotenv (.env) file in the root dictionary with local dictionary db path.
+```
+Dictionary_DB=<local path>/shu_haimeng_xingxing/config/Dictionary.db
+```
+
 ## Tests
 
 ```
