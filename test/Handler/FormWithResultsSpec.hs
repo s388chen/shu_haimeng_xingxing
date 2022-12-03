@@ -1,16 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Handler.GetWordSpec (spec) where
+module Handler.FormWithResultsSpec (spec) where
 
 import Foundation
 import TestImport
 
 spec :: Spec
 spec = withApp $ do
-  describe "getGetWordR" $ do
+  describe "getFormWithResultsR" $ do
     it "gives a 200 and display the correct form" $ do
-      get GetWordR
+      get FormWithResultsR
       statusIs 200
       htmlAnyContain "h1" "Our word recommendation"
       htmlAnyContain "label" "Your term here. You can make a guess."
@@ -19,7 +19,7 @@ spec = withApp $ do
     it "400s when Post request - Invalid Method" $ do
       request $ do
         setMethod "POST"
-        setUrl GetWordR
+        setUrl FormWithResultsR
         addRequestHeader ("Content-Type", "application/json")
 
       statusIs 405

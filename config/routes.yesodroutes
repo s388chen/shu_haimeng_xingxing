@@ -12,5 +12,5 @@
 /comments CommentR POST
 
 /profile ProfileR GET
-/word GetWordR GET
-/word/#Text GetAutoCorrectR GET
+/word FormWithResultsR GET
+/word/#Text WordInfoR GET

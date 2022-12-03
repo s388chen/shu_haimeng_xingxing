@@ -1,19 +1,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Handler.GetAutoCorrectSpec (spec) where
+module Handler.WordInfoSpec (spec) where
 
 import DictionaryDB
 import Handler.Autocorrect
-import Handler.GetAutoCorrect
+import Handler.WordInfo
 import TestImport
 
 spec :: Spec
 spec = withApp $ do
-  describe "getGetAutoCorrectR" $ do
+  describe "getWordInfoR" $ do
     it "gives a 200 and return matched results" $ do
       let wordId = "test" :: Text
-      get (GetAutoCorrectR wordId)
+      get (WordInfoR wordId)
       statusIs 200
 
       matched <- runSimDB $ selectList [WordsWord ==. wordId] []
@@ -21,7 +21,7 @@ spec = withApp $ do
 
     it "gives a 200 and return no match" $ do
       let wordId = "" :: Text
-      get (GetAutoCorrectR wordId)
+      get (WordInfoR wordId)
       statusIs 200
 
       matched <- runSimDB $ selectList [WordsWord ==. wordId] []

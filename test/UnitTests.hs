@@ -7,7 +7,7 @@ import qualified Data.Map.Strict as Map
 import Data.Set as S (fromList, toList)
 import DictionaryDB
 import Handler.Autocorrect
-import Handler.GetAutoCorrect
+import Handler.WordInfo
 import Test.HUnit (Assertion, Counts, Test (..), assert, runTestTT, (~:), (~?=))
 import Test.QuickCheck (Arbitrary (..), Gen, Property, Testable (..), (==>))
 import qualified Test.QuickCheck as QC
@@ -17,15 +17,15 @@ import Prelude
 testCorrection :: Test
 testCorrection =
   TestList
-    [ correction "speling" ~?= "spelling", --insert
-      correction "korrectud" ~?= "corrected", --replace 2
-      correction "bycycle" ~?= "bicycle", --replace
-      correction "inconvient" ~?= "inconvenient", --insert 2
-      correction "arrainged" ~?= "arranged", --delete
-      correction "peotry" ~?= "poetry", --transpose
+    [ correction "speling" ~?= "spelling", -- insert
+      correction "korrectud" ~?= "corrected", -- replace 2
+      correction "bycycle" ~?= "bicycle", -- replace
+      correction "inconvient" ~?= "inconvenient", -- insert 2
+      correction "arrainged" ~?= "arranged", -- delete
+      correction "peotry" ~?= "poetry", -- transpose
       correction "peotryy" ~?= "poetry", -- transpose + delete
-      correction "word" ~?= "word", --known
-      correction "quintessential" ~?= "quintessential" --unknown
+      correction "word" ~?= "word", -- known
+      correction "quintessential" ~?= "quintessential" -- unknown
     ]
 
 -- | Test for probability

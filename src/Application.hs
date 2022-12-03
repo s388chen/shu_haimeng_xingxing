@@ -37,10 +37,10 @@ import Database.Persist.Sqlite
   )
 import Handler.Comment
 import Handler.Common
-import Handler.GetAutoCorrect
-import Handler.GetWord
+import Handler.FormWithResults
 import Handler.Home
 import Handler.Profile
+import Handler.WordInfo
 import Import
 import Language.Haskell.TH.Syntax (qLocation)
 import Network.HTTP.Client.TLS (getGlobalManager)

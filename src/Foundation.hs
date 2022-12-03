@@ -14,6 +14,7 @@ import Control.Monad.Logger (LogSource)
 -- Used only when in "auth-dummy-login" setting is enabled.
 
 import qualified Data.CaseInsensitive as CI
+import Data.Kind
 import qualified Data.Text.Encoding as TE
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Import.NoFoundation
@@ -68,7 +69,7 @@ type Form x = Html -> MForm (HandlerFor App) (FormResult x, Widget)
 
 -- | A convenient synonym for database access functions.
 type DB a =
-  forall (m :: * -> *).
+  forall (m :: Data.Kind.Type -> Data.Kind.Type).
   (MonadUnliftIO m) =>
   ReaderT SqlBackend m a
 
@@ -130,7 +131,7 @@ instance Yesod App where
             NavbarLeft $
               MenuItem
                 { menuItemLabel = "Word",
-                  menuItemRoute = GetWordR,
+                  menuItemRoute = FormWithResultsR,
                   menuItemAccessCallback = isJust muser
                 },
             NavbarRight $
@@ -182,11 +183,10 @@ instance Yesod App where
   isAuthorized FaviconR _ = return Authorized
   isAuthorized RobotsR _ = return Authorized
   isAuthorized (StaticR _) _ = return Authorized
-  isAuthorized _ _ = return Authorized
   -- the profile route requires that the user is authenticated, so we
   -- delegate to that function
-
   isAuthorized ProfileR _ = isAuthenticated
+  isAuthorized _ _ = return Authorized
 
   -- This function creates static content files in the static folder
   -- and names them based on a hash of their content. This allows
@@ -235,8 +235,8 @@ instance YesodBreadcrumbs App where
   breadcrumb HomeR = return ("Home", Nothing)
   breadcrumb (AuthR _) = return ("Login", Just HomeR)
   breadcrumb ProfileR = return ("Profile", Just HomeR)
-  breadcrumb GetWordR = return ("word", Just HomeR)
-  breadcrumb (GetAutoCorrectR text) = return ("word/" ++ text, Just HomeR)
+  breadcrumb FormWithResultsR = return ("word", Just HomeR)
+  breadcrumb (WordInfoR text) = return ("word/" ++ text, Just HomeR)
   breadcrumb _ = return ("home", Nothing)
 
 -- How to run database actions.

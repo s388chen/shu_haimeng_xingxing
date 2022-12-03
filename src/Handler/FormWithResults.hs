@@ -9,7 +9,7 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Handler.GetWord where
+module Handler.FormWithResults where
 
 import Handler.Autocorrect
 import Import
@@ -29,8 +29,8 @@ searchForm = renderDivs $ areq (searchField True) textSettings Nothing
             ]
         }
 
-getGetWordR :: Handler Html
-getGetWordR = do
+getFormWithResultsR :: Handler Html
+getFormWithResultsR = do
   wm <- wordsMap
   ((formRes, searchWidget), formEnctype) <- runFormGet searchForm
   searchResults <-
@@ -38,5 +38,5 @@ getGetWordR = do
       FormSuccess qstring -> return $ noDupCandidates $ candidates wm (unpack qstring)
       _ -> return []
   defaultLayout $ do
-    $(widgetFile "WordRecommendation/word")
+    $(widgetFile "WordRecommendation/searchForm")
     $(widgetFile "WordRecommendation/results")

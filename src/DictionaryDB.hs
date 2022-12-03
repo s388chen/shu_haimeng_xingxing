@@ -16,11 +16,10 @@
 
 module DictionaryDB where
 
+import qualified ClassyPrelude.Yesod as Control.Monad.Trans.Reader
 import Conduit
-import Control.Monad.IO.Class (liftIO)
-import Control.Monad.Logger
+import qualified Control.Monad.Logger
 import Data.Text
-import Database.Persist
 import Database.Persist.Sqlite
 import Database.Persist.TH
 import System.Environment (getEnv)
@@ -38,6 +37,10 @@ Words sql=words id=(word, type)
   deriving Show
 |]
 
+runSimDB ::
+  MonadUnliftIO m =>
+  Control.Monad.Trans.Reader.ReaderT SqlBackend (Control.Monad.Logger.NoLoggingT (ResourceT m)) b ->
+  m b
 runSimDB f = do
   path <- liftIO $ pack <$> getEnv "Dictionary_DB"
   runSqlite path $ do

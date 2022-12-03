@@ -6,7 +6,6 @@ import qualified Data.Map.Strict as Map
 import Data.Set as S (fromList, toList)
 import DictionaryDB
 import Handler.Autocorrect
-import Handler.GetAutoCorrect
 import Test.HUnit (Assertion, Counts, Test (..), assert, runTestTT, (~:), (~?=))
 import Test.QuickCheck (Arbitrary (..), Gen, Property, Testable (..), (==>))
 import qualified Test.QuickCheck as QC

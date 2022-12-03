@@ -10,17 +10,15 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Handler.GetAutoCorrect where
+module Handler.WordInfo where
 
-import Control.Monad.IO.Class (liftIO)
 import Import
 
-getGetAutoCorrectR :: Text -> Handler Html
-getGetAutoCorrectR wordId =
+getWordInfoR :: Text -> Handler Html
+getWordInfoR wordId =
   do
     wordPs <- runSimDB $ selectList [WordsWord ==. wordId] []
-    -- liftIO (print words)
     defaultLayout $
       do
         setTitle "Recommendations of term #{wordId}"
-        $(widgetFile "WordRecommendation/words")
+        $(widgetFile "WordRecommendation/wordInfo")
