@@ -130,9 +130,9 @@ instance Yesod App where
                 },
             NavbarLeft $
               MenuItem
-                { menuItemLabel = "Word",
+                { menuItemLabel = "Autocorrection",
                   menuItemRoute = FormWithResultsR,
-                  menuItemAccessCallback = isJust muser
+                  menuItemAccessCallback = True
                 },
             NavbarRight $
               MenuItem

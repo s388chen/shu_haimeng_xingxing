@@ -34,7 +34,7 @@ searchForm = renderDivs $ areq (searchField True) textSettings Nothing
 getFormWithResultsR :: Handler Html
 getFormWithResultsR = do
   wm <- wordsMap
-  let ws = Map.keys wm --wordsSet
+  let ws = Map.keys wm -- wordsSet
   ((formRes, searchWidget), formEnctype) <- runFormGet searchForm
   searchResults <-
     case formRes of

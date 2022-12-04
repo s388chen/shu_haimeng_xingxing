@@ -1,6 +1,12 @@
+<h3 ##{archivedTextId}>#{wordId}</h3>
+$if null archive && not (null wordPs)
+    <button ##{archivedSubmitId} class="btn-default btn-sm" type=button>archive
+$elseif not (null wordPs)
+    <button ##{archivedSubmitId} class="btn-primary btn-sm" type=button disabled>archived
+    
 <div .col-lg-4.col-lg-offset-1>
 $forall word <- wordPs
-    <div .bs-callout.bs-callout-info>
+    <div .bs-callout.bs-callout-info ##{archivedListId}>
         <small>
             Here is #{wordId}'s with #{wordsType $ entityVal word} type.
         <ul>

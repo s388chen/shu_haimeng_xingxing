@@ -14,3 +14,4 @@
 /profile ProfileR GET
 /word FormWithResultsR GET
 /word/#Text WordInfoR GET
+/archive ArchiveR POST

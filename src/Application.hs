@@ -41,6 +41,7 @@ import Handler.FormWithResults
 import Handler.Home
 import Handler.Profile
 import Handler.WordInfo
+import Handler.Archive
 import Import
 import Language.Haskell.TH.Syntax (qLocation)
 import Network.HTTP.Client.TLS (getGlobalManager)
