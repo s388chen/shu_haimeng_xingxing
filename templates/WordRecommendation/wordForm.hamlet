@@ -1,0 +1,6 @@
+<h1> Leave your proofreading to us!
+
+<form method=get action=@{WordFormR} enctype=#{formEnctype}>
+    ^{searchWidget}
+    <br>
+    <button class="btn btn-default"> Autocorrect 

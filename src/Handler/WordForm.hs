@@ -9,7 +9,7 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Handler.FormWithResults where
+module Handler.WordForm where
 
 import qualified Data.List
 import qualified Data.Map as Map
@@ -31,21 +31,16 @@ searchForm = renderDivs $ areq (searchField True) textSettings Nothing
             ]
         }
 
-getFormWithResultsR :: Handler Html
-getFormWithResultsR = do
+getWordFormR :: Handler Html
+getWordFormR = do
   wm <- wordsMap
-  let ws = Map.keys wm -- wordsSet
   ((formRes, searchWidget), formEnctype) <- runFormGet searchForm
   searchResults <-
     case formRes of
-      FormSuccess qstring -> do
-        let lstOfStrs = wordsWhen (== ' ') (unpack . toLower $ qstring)
-        case Data.List.find (`notElem` ws) lstOfStrs of
-          Just wrongWord -> return $ noDupCandidates $ candidates wm wrongWord
-          Nothing -> return []
+      FormSuccess qstring -> return $ noDupCandidates $ candidates wm (unpack . toLower $ qstring)
       _ -> return []
   defaultLayout $ do
-    $(widgetFile "WordRecommendation/searchForm")
+    $(widgetFile "WordRecommendation/wordForm")
     $(widgetFile "WordRecommendation/results")
 
 wordsWhen :: (Char -> Bool) -> String -> [String]
@@ -54,3 +49,6 @@ wordsWhen pre s = case dropWhile pre s of
   s' -> w : wordsWhen pre s''
     where
       (w, s'') = break pre s'
+
+splitWords :: String -> [String]
+splitWords = wordsWhen (\c -> c == ' ' || c == ',' || c == '.' || c == '"')

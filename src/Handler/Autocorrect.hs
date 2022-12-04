@@ -2,13 +2,11 @@
 
 module Handler.Autocorrect where
 
-import Data.Char (isAlpha)
 import Data.List
 import Data.List.Extras.Argmax (argmax)
 import qualified Data.Map.Strict as Map
-import Data.Set as S (fromList, toList, union)
+import Data.Set as S (fromList, toList)
 import DictionaryDB
-import GHC.IO
 import Import
   ( Entity (entityVal),
     Handler,

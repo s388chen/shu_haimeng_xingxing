@@ -35,13 +35,14 @@ import Database.Persist.Sqlite
     sqlDatabase,
     sqlPoolSize,
   )
+import Handler.Archive
 import Handler.Comment
 import Handler.Common
-import Handler.FormWithResults
 import Handler.Home
 import Handler.Profile
+import Handler.SentenceForm
+import Handler.WordForm
 import Handler.WordInfo
-import Handler.Archive
 import Import
 import Language.Haskell.TH.Syntax (qLocation)
 import Network.HTTP.Client.TLS (getGlobalManager)

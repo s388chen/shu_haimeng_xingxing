@@ -1,6 +1,0 @@
-<h1> Leave your proofreading to us!
-
-<form method=get action=@{FormWithResultsR} enctype=#{formEnctype}>
-    ^{searchWidget}
-    <br>
-    <button class="btn btn-default"> autocorrect 
