@@ -1,0 +1,4 @@
+$if not $ null correctedSentence
+    <h2> Suggestions 
+        <div .correctedSentence>
+            <h4> #{correctedSentence}
