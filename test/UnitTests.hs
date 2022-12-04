@@ -87,18 +87,20 @@ testCandidates =
 testEdits1 :: Test
 testEdits1 =
   TestList
-    [ length (edits1 "somthing") ~?= 457,
-      length (noDupCandidates (edits1 "somthing")) ~?= 442
+    [ length (edits1 "") ~?= 26,
+      length (edits1 "a") ~?= 79,
+      length (edits1 "somthing") ~?= 450,
+      length (noDupCandidates (edits1 "somthing")) ~?= 435
     ]
 
 testEdits2 :: Test
 testEdits2 =
   TestList
-    [ length (edits2 "s") ~?= 8996,
-      length (edits2 "ss") ~?= 21793,
-      length (edits2 "sa") ~?= 21793,
+    [ length (edits2 "s") ~?= 8944,
+      length (edits2 "ss") ~?= 21452,
+      length (edits2 "sa") ~?= 21452,
       length (noDupCandidates (edits2 "ss")) ~?= 6505,
-      length (noDupCandidates (edits2 "sa")) ~?= 7154
+      length (noDupCandidates (edits2 "sa")) ~?= 7130
     ]
 
 runTests :: IO Counts

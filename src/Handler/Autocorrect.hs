@@ -88,6 +88,20 @@ edits1 word = deletes ++ replaces ++ inserts
 -- >>> edits1 ""
 -- ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 
+-- | All words after one possible transpose
+-- we do not combine this with edits1 because it is actually edit2 but this happen more frequently than common edit2 cases
+transpose1 :: String -> [String]
+transpose1 word = transposes
+  where
+    splits = [splitAt i word | i <- [0 .. length word]]
+    transposes = [l ++ r !! 1 : head r : drop 2 r | (l, r) <- splits, length r > 1]
+
+-- >>> transpose1 "haskell"
+-- ["ahskell","hsakell","haksell","hasekll","hasklel","haskell"]
+
 -- | All possible edits that are two edits away from @word@.
 edits2 :: String -> [String]
-edits2 word = [e2 | e1 <- edits1 word, e2 <- edits1 e1]
+edits2 word = [e3 ++ e4 | e1 <- edits1 word, e2 <- transpose1 word, e3 <- edits1 e1, e4 <- edits1 e2]
+
+-- >>> length (noDupCandidates (edits1 "somthing"))
+-- 435
