@@ -2,41 +2,69 @@
 module UnitTests where
 
 import Data.List
-import Data.List.Extras.Argmax (argmax)
 import qualified Data.Map.Strict as Map
-import Data.Set as S (fromList, toList)
-import DictionaryDB
 import Handler.Autocorrect
-import Handler.WordInfo
-import Test.HUnit (Assertion, Counts, Test (..), assert, runTestTT, (~:), (~?=))
-import Test.QuickCheck (Arbitrary (..), Gen, Property, Testable (..), (==>))
-import qualified Test.QuickCheck as QC
+  ( candidates,
+    correction,
+    edits1,
+    edits2,
+    known,
+    noDupCandidates,
+    p,
+  )
+import Test.HUnit (Counts, Test (..), runTestTT, (~?=))
 import Prelude
+
+testDict1 :: Map.Map String Int
+testDict1 =
+  Map.fromList
+    [ ("haskell", 5),
+      ("python", 2),
+      ("java", 3)
+    ]
+
+testDict2 :: Map.Map String Int
+testDict2 = Map.empty
+
+testDict3 :: Map.Map String Int
+testDict3 =
+  Map.fromList
+    [ ("haskell", 5),
+      ("python", 2),
+      ("java", 3),
+      ("spelling", 1),
+      ("corrected", 10),
+      ("bicycle", 1),
+      ("inconvenient", 1),
+      ("arranged", 1),
+      ("poetry", 1),
+      ("word", 1)
+    ]
 
 -- | Test for the most probable spelling correction for @word@.
 testCorrection :: Test
 testCorrection =
   TestList
-    [ correction "speling" ~?= "spelling", -- insert
-      correction "korrectud" ~?= "corrected", -- replace 2
-      correction "bycycle" ~?= "bicycle", -- replace
-      correction "inconvient" ~?= "inconvenient", -- insert 2
-      correction "arrainged" ~?= "arranged", -- delete
-      correction "peotry" ~?= "poetry", -- transpose
-      correction "peotryy" ~?= "poetry", -- transpose + delete
-      correction "word" ~?= "word", -- known
-      correction "quintessential" ~?= "quintessential" -- unknown
+    [ correction testDict3 "speling" ~?= "spelling", -- insert
+      correction testDict3 "korrectud" ~?= "corrected", -- replace 2
+      correction testDict3 "bycycle" ~?= "bicycle", -- replace
+      correction testDict3 "inconvient" ~?= "inconvenient", -- insert 2
+      correction testDict3 "arrainged" ~?= "arranged", -- delete
+      correction testDict3 "peotry" ~?= "poetry", -- transpose
+      correction testDict3 "peotryy" ~?= "poetry", -- transpose + delete
+      correction testDict3 "word" ~?= "word", -- known
+      correction testDict3 "quintessential" ~?= "quintessential" -- unknown
     ]
 
 -- | Test for probability
 testP :: Test
 testP =
   TestList
-    [ p wm 'quintessential' ~?= 0
+    [ p testDict1 "quintessential" ~?= 0
     ]
 
-testNoDuplicates :: Test
-testNoDuplicates =
+testNoDupCandidates :: Test
+testNoDupCandidates =
   TestList
     [ noDupCandidates ["test", "test", "test1"] ~?= ["test", "test1"]
     ]
@@ -44,26 +72,34 @@ testNoDuplicates =
 testKnown :: Test
 testKnown =
   TestList
-    [ known Map.empty ["haskell", "python"] ~?= [],
-      known Map.fromList ["haskell", "python"] ["haskell", "python"] ~?= ["haskell", "python"]
+    [ known testDict1 [] ~?= [],
+      known testDict1 ["haskell", "python"] ~?= ["haskell", "python"]
     ]
 
 testCandidates :: Test
 testCandidates =
   TestList
-    [ candidates Map.empty "haskell" ~?= ["haskell"]
+    [ candidates testDict1 "haskel" ~?= ["haskell", "haskell"],
+      candidates testDict2 "haskell" ~?= ["haskell"],
+      candidates testDict3 "haskell" ~?= ["haskell"]
     ]
 
 testEdits1 :: Test
 testEdits1 =
   TestList
-    [ length (noDuplicates (edits1 "somthing")) ~?= 390
+    [ length (edits1 "somthing") ~?= 457,
+      length (noDupCandidates (edits1 "somthing")) ~?= 442
     ]
 
 testEdits2 :: Test
 testEdits2 =
   TestList
-    []
+    [ length (edits2 "s") ~?= 8996,
+      length (edits2 "ss") ~?= 21793,
+      length (edits2 "sa") ~?= 21793,
+      length (noDupCandidates (edits2 "ss")) ~?= 6505,
+      length (noDupCandidates (edits2 "sa")) ~?= 7154
+    ]
 
 runTests :: IO Counts
 runTests =
@@ -71,7 +107,7 @@ runTests =
     TestList
       [ testCorrection,
         testP,
-        testNoDuplicates,
+        testNoDupCandidates,
         testKnown,
         testCandidates,
         testEdits1,

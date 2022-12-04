@@ -1,4 +1,4 @@
-<h1> Our word recommendation
+<h1> Leave your proofreading to us!
 
 <form method=get action=@{FormWithResultsR} enctype=#{formEnctype}>
     ^{searchWidget}

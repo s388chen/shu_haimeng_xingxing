@@ -46,8 +46,11 @@ p wm word = (/ n) $ fromIntegral $ fromMaybe 0 (Map.lookup word wm :: Maybe Int)
 correction :: Map.Map String Int -> String -> String
 correction wm word = argmax (p wm) $ candidates wm word
 
--- >>> correction "" "sitting"
+-- >>> correction Map.empty "sitting"
 -- "sitting"
+
+-- >>> candidates (Map.fromList[("corrected", 1)]) "korrectud"
+-- ["corrected","corrected"]
 
 noDupCandidates :: [String] -> [String]
 noDupCandidates = S.toList . S.fromList
@@ -81,14 +84,14 @@ edits1 :: String -> [String]
 edits1 word = deletes ++ transposes ++ replaces ++ inserts
   where
     letters = "abcdefghijklmnopqrstuvwxyz"
-    splits = [splitAt i word | i <- [1 .. length word]]
+    splits = [splitAt i word | i <- [0 .. length word]]
     deletes = [l ++ tail r | (l, r) <- splits, (not . null) r]
     transposes = [l ++ r !! 1 : head r : drop 2 r | (l, r) <- splits, length r > 1]
     replaces = [l ++ c : tail r | (l, r) <- splits, (not . null) r, c <- letters]
     inserts = [l ++ c : r | (l, r) <- splits, c <- letters]
 
--- >>> length( noDuplicates (edits1 "somthing"))
--- Variable not in scope: noDuplicates :: [String] -> t0 a0
+-- >>> length((edits1 "somthing"))
+-- 457
 
 -- | All edits that are two edits away from @word@.
 edits2 :: String -> [String]
