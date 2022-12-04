@@ -130,8 +130,14 @@ instance Yesod App where
                 },
             NavbarLeft $
               MenuItem
-                { menuItemLabel = "Autocorrection",
-                  menuItemRoute = FormWithResultsR,
+                { menuItemLabel = "Word",
+                  menuItemRoute = WordFormR,
+                  menuItemAccessCallback = True
+                },
+            NavbarLeft $
+              MenuItem
+                { menuItemLabel = "Sentence",
+                  menuItemRoute = SentenceFormR,
                   menuItemAccessCallback = True
                 },
             NavbarRight $
@@ -235,7 +241,8 @@ instance YesodBreadcrumbs App where
   breadcrumb HomeR = return ("Home", Nothing)
   breadcrumb (AuthR _) = return ("Login", Just HomeR)
   breadcrumb ProfileR = return ("Profile", Just HomeR)
-  breadcrumb FormWithResultsR = return ("word", Just HomeR)
+  breadcrumb WordFormR = return ("word", Just HomeR)
+  breadcrumb SentenceFormR = return ("sentence", Just HomeR)
   breadcrumb (WordInfoR text) = return ("word/" ++ text, Just HomeR)
   breadcrumb _ = return ("home", Nothing)
 

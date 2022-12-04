@@ -12,6 +12,7 @@
 /comments CommentR POST
 
 /profile ProfileR GET
-/word FormWithResultsR GET
+/word WordFormR GET
 /word/#Text WordInfoR GET
 /archive ArchiveR POST
+/sentence SentenceFormR GET

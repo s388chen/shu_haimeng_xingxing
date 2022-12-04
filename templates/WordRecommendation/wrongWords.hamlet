@@ -1,0 +1,5 @@
+$if not $ null wrongWords
+    <h2>Wrong Words
+    $forall result <- wrongWords
+        <div .result>
+            <a href="/word/#{result}">#{result}
