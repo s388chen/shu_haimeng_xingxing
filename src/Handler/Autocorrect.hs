@@ -10,6 +10,7 @@ import DictionaryDB
 import Import
   ( Entity (entityVal),
     Handler,
+    PersistStoreWrite (delete),
     Textual (toLower),
     fromMaybe,
     selectList,
@@ -75,22 +76,18 @@ known wm words' = [w | w <- words', Map.member w wm]
 -- []
 
 -- | All edits that are one edit away from @word@.
--- | For a word of length n, there will be n deletions, n-1 transpositions,
--- | 26n alterations, and 26(n+1) insertions,
--- | for a total of 54n+25 (with duplicates removed)
 edits1 :: String -> [String]
-edits1 word = deletes ++ transposes ++ replaces ++ inserts
+edits1 word = deletes ++ replaces ++ inserts
   where
-    letters = "abcdefghijklmnopqrstuvwxyz"
+    alphabet = ['a' .. 'z']
     splits = [splitAt i word | i <- [0 .. length word]]
     deletes = [l ++ tail r | (l, r) <- splits, (not . null) r]
-    transposes = [l ++ r !! 1 : head r : drop 2 r | (l, r) <- splits, length r > 1]
-    replaces = [l ++ c : tail r | (l, r) <- splits, (not . null) r, c <- letters]
-    inserts = [l ++ c : r | (l, r) <- splits, c <- letters]
+    replaces = [l ++ c : tail r | (l, r) <- splits, (not . null) r, c <- alphabet]
+    inserts = [l ++ c : r | (l, r) <- splits, c <- alphabet]
 
--- >>> length((edits1 "somthing"))
--- 457
+-- >>> edits1 ""
+-- ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 
--- | All edits that are two edits away from @word@.
+-- | All possible edits that are two edits away from @word@.
 edits2 :: String -> [String]
 edits2 word = [e2 | e1 <- edits1 word, e2 <- edits1 e1]
