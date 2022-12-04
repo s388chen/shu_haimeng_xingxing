@@ -3,3 +3,4 @@ $if not $ null searchResults
     $forall result <- searchResults
         <div .result>
             <a href="/word/#{result}">#{result}
+            
