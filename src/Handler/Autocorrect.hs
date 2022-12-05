@@ -61,6 +61,8 @@ candidates wm word = head $ filter (not . null) s
     s =
       [ known wm [word],
         known wm $ edits1 word,
+        known wm $ transpose1 word,
+        known wm $ shift1 word,
         known wm $ edits2 word,
         [word]
       ]
@@ -105,3 +107,87 @@ edits2 word = [e3 ++ e4 | e1 <- edits1 word, e2 <- transpose1 word, e3 <- edits1
 
 -- >>> length (noDupCandidates (edits1 "somthing"))
 -- 435
+
+-- if our hand shift one letter left on the keyboard, we may input a word with a large edit distance
+-- but actually this is a common mistake
+shift1left :: String -> String
+shift1left word = [shift1' c | c <- word]
+  where
+    shift1' :: Char -> Char
+    shift1' c
+      | c == 'q' = 'w'
+      | c == 'w' = 'e'
+      | c == 'e' = 'r'
+      | c == 'r' = 't'
+      | c == 't' = 'y'
+      | c == 'y' = 'u'
+      | c == 'u' = 'i'
+      | c == 'i' = 'o'
+      | c == 'o' = 'p'
+      | c == 'p' = 'a'
+      | c == 'a' = 's'
+      | c == 's' = 'd'
+      | c == 'd' = 'f'
+      | c == 'f' = 'g'
+      | c == 'g' = 'h'
+      | c == 'h' = 'j'
+      | c == 'j' = 'k'
+      | c == 'k' = 'l'
+      | c == 'l' = 'z'
+      | c == 'z' = 'x'
+      | c == 'x' = 'c'
+      | c == 'c' = 'v'
+      | c == 'v' = 'b'
+      | c == 'b' = 'n'
+      | c == 'n' = 'm'
+      | c == 'm' = 'q'
+      | otherwise = c
+
+-- >>> shift1 "gwkki"
+-- "hello"
+
+shift1right :: String -> String
+shift1right word = [shift1' c | c <- word]
+  where
+    shift1' :: Char -> Char
+    shift1' c
+      | c == 'q' = 'm'
+      | c == 'w' = 'q'
+      | c == 'e' = 'w'
+      | c == 'r' = 'e'
+      | c == 't' = 'r'
+      | c == 'y' = 't'
+      | c == 'u' = 'y'
+      | c == 'i' = 'u'
+      | c == 'o' = 'i'
+      | c == 'p' = 'o'
+      | c == 'a' = 'p'
+      | c == 's' = 'a'
+      | c == 'd' = 's'
+      | c == 'f' = 'd'
+      | c == 'g' = 'f'
+      | c == 'h' = 'g'
+      | c == 'j' = 'h'
+      | c == 'k' = 'j'
+      | c == 'l' = 'k'
+      | c == 'z' = 'l'
+      | c == 'x' = 'z'
+      | c == 'c' = 'x'
+      | c == 'v' = 'c'
+      | c == 'b' = 'v'
+      | c == 'n' = 'b'
+      | c == 'm' = 'n'
+      | otherwise = c
+
+-- >>> shift1right "hello"
+-- "gwkki"
+
+-- >>> shift1right "hppf"
+-- "good"
+
+-- combine the result of shift1left and shift1right to a list
+shift1 :: String -> [String]
+shift1 word = [shift1left word, shift1right word]
+
+-- >>> shift1 "hppf"
+-- ["jaag","good"]

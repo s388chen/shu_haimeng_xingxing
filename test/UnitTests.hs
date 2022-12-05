@@ -53,7 +53,8 @@ testCorrection =
       correction testDict3 "peotry" ~?= "poetry", -- transpose
       correction testDict3 "peotryy" ~?= "poetry", -- transpose + delete
       correction testDict3 "word" ~?= "word", -- known
-      correction testDict3 "quintessential" ~?= "quintessential" -- unknown
+      correction testDict3 "quintessential" ~?= "quintessential", -- unknown
+      correction testDict3 "eptf" ~?= "word" -- shift1
     ]
 
 -- | Test for probability
