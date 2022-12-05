@@ -11,8 +11,6 @@
 
 module Handler.WordForm where
 
-import qualified Data.List
-import qualified Data.Map as Map
 import Handler.Autocorrect
 import Import
 
@@ -21,7 +19,7 @@ searchForm = renderDivs $ areq (searchField True) textSettings Nothing
   where
     textSettings =
       FieldSettings
-        { fsLabel = "Simply copy and paste your text into the box below for a easy online spelling check.",
+        { fsLabel = "Simply copy and paste your word into the box below for a easy online spelling check.",
           fsTooltip = Nothing,
           fsId = Nothing,
           fsName = Nothing,
@@ -42,13 +40,3 @@ getWordFormR = do
   defaultLayout $ do
     $(widgetFile "WordRecommendation/wordForm")
     $(widgetFile "WordRecommendation/results")
-
-wordsWhen :: (Char -> Bool) -> String -> [String]
-wordsWhen pre s = case dropWhile pre s of
-  "" -> []
-  s' -> w : wordsWhen pre s''
-    where
-      (w, s'') = break pre s'
-
-splitWords :: String -> [String]
-splitWords = wordsWhen (\c -> c == ' ' || c == ',' || c == '.' || c == '"')

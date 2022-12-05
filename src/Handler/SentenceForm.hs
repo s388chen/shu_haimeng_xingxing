@@ -42,6 +42,13 @@ getSentenceFormR = do
         let lstOfStrs = splitWords (unpack . toLower $ qstring)
         return $ Data.List.filter (`notElem` ws) lstOfStrs
       _ -> return []
+  suggestions <-
+    case formRes of
+      FormSuccess qstring -> do
+        let lstOfStrs = splitWords (unpack . toLower $ qstring)
+        let corrected = map (\x -> if x `notElem` ws then (x, correction wm x) else (x, "")) lstOfStrs
+        return corrected
+      _ -> return []
   correctedSentence <-
     case formRes of
       FormSuccess qstring -> do

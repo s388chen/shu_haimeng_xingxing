@@ -1,4 +1,9 @@
-$if not $ null correctedSentence
-    <h2> Suggestions 
-        <div .correctedSentence>
-            <h4> #{correctedSentence}
+$if not $ null suggestions
+    <h2> Suggestions
+        <div .bs-callout>
+            <ul .sentence>
+                $forall (original, corrected) <- suggestions
+                    $if (corrected == "") 
+                        <li> #{original}         
+                    $else 
+                        <a href="/word/#{corrected}"> #{corrected} 
