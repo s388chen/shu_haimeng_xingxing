@@ -4,6 +4,6 @@ $if not $ null suggestions
             <ul .sentence>
                 $forall (original, corrected) <- suggestions
                     $if (corrected == "") 
-                        <li> #{original}         
+                        #{original}         
                     $else 
-                        <a href="/word/#{corrected}"> #{corrected} 
+                        &nbsp;<a href="/word/#{corrected}"> #{corrected}</a>&nbsp; 

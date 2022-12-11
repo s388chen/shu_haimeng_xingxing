@@ -36,12 +36,6 @@ getSentenceFormR = do
   wm <- wordsMap
   let ws = Map.keys wm -- wordsSet
   ((formRes, searchWidget), formEnctype) <- runFormGet searchForm
-  wrongWords <-
-    case formRes of
-      FormSuccess qstring -> do
-        let lstOfStrs = splitWords (unpack . toLower $ qstring)
-        return $ Data.List.filter (`notElem` ws) lstOfStrs
-      _ -> return []
   suggestions <-
     case formRes of
       FormSuccess qstring -> do
@@ -49,16 +43,8 @@ getSentenceFormR = do
         let corrected = map (\x -> if x `notElem` ws then (x, correction wm x) else (x, "")) lstOfStrs
         return corrected
       _ -> return []
-  correctedSentence <-
-    case formRes of
-      FormSuccess qstring -> do
-        let lstOfStrs = splitWords (unpack . toLower $ qstring)
-        let corrected = concatMap ((++ " ") . (\x -> if x `notElem` ws then correction wm x else x)) lstOfStrs
-        return corrected
-      _ -> return ""
   defaultLayout $ do
     $(widgetFile "WordRecommendation/sentenceForm")
-    -- (widgetFile "WordRecommendation/wrongWords")
     $(widgetFile "WordRecommendation/correctedSentence")
 
 wordsWhen :: (Char -> Bool) -> String -> [String]
