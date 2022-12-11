@@ -19,7 +19,8 @@ getWordInfoR :: Text -> Handler Html
 getWordInfoR wordId =
   do
     wordPs <- runSimDB $ selectList [WordsWord ==. wordId] []
-    archive <- runDB $ selectList [ArchivedWord ==. wordId] []
+    (userId, _) <- requireAuthPair
+    archive <- runDB $ selectList [ArchivedUserId ==. Just userId, ArchivedWord ==. wordId] []
     defaultLayout $
       do
         let (archivedSubmitId, archivedTextId, archivedListId) = archivedIds
