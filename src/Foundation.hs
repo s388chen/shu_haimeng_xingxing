@@ -124,8 +124,8 @@ instance Yesod App where
                 },
             NavbarLeft $
               MenuItem
-                { menuItemLabel = "Profile",
-                  menuItemRoute = ProfileR,
+                { menuItemLabel = "Favorites",
+                  menuItemRoute = FavoritesR,
                   menuItemAccessCallback = isJust muser
                 },
             NavbarLeft $
@@ -184,14 +184,13 @@ instance Yesod App where
     Handler AuthResult
   -- Routes not requiring authentication.
   isAuthorized (AuthR _) _ = return Authorized
-  isAuthorized CommentR _ = return Authorized
   isAuthorized HomeR _ = return Authorized
   isAuthorized FaviconR _ = return Authorized
   isAuthorized RobotsR _ = return Authorized
   isAuthorized (StaticR _) _ = return Authorized
   -- the profile route requires that the user is authenticated, so we
   -- delegate to that function
-  isAuthorized ProfileR _ = isAuthenticated
+  isAuthorized FavoritesR _ = isAuthenticated
   isAuthorized _ _ = return Authorized
 
   -- This function creates static content files in the static folder
@@ -240,7 +239,7 @@ instance YesodBreadcrumbs App where
     Handler (Text, Maybe (Route App))
   breadcrumb HomeR = return ("Home", Nothing)
   breadcrumb (AuthR _) = return ("Login", Just HomeR)
-  breadcrumb ProfileR = return ("Profile", Just HomeR)
+  breadcrumb FavoritesR = return ("Favorites", Just HomeR)
   breadcrumb WordFormR = return ("word", Just HomeR)
   breadcrumb SentenceFormR = return ("sentence", Just HomeR)
   breadcrumb (WordInfoR text) = return ("word/" ++ text, Just HomeR)
@@ -322,11 +321,3 @@ instance HasHttpManager App where
 
 unsafeHandler :: App -> Handler a -> IO a
 unsafeHandler = Unsafe.fakeHandlerGetLogger appLogger
-
--- Note: Some functionality previously present in the scaffolding has been
--- moved to documentation in the Wiki. Following are some hopefully helpful
--- links:
---
--- https://github.com/yesodweb/yesod/wiki/Sending-email
--- https://github.com/yesodweb/yesod/wiki/Serve-static-files-from-a-separate-domain
--- https://github.com/yesodweb/yesod/wiki/i18n-messages-in-the-scaffolding

@@ -36,10 +36,9 @@ import Database.Persist.Sqlite
     sqlPoolSize,
   )
 import Handler.Archive
-import Handler.Comment
 import Handler.Common
+import Handler.Favorites
 import Handler.Home
-import Handler.Profile
 import Handler.SentenceForm
 import Handler.WordForm
 import Handler.WordInfo

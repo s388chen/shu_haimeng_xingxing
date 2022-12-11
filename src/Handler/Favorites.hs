@@ -4,12 +4,12 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Handler.Profile where
+module Handler.Favorites where
 
 import Import
 
-getProfileR :: Handler Html
-getProfileR = do
+getFavoritesR :: Handler Html
+getFavoritesR = do
   (userId, user) <- requireAuthPair
   allWords <- runDB $ selectList [ArchivedUserId ==. Just userId] []
   defaultLayout $ do
