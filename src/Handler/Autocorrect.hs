@@ -10,7 +10,6 @@ import DictionaryDB
 import Import
   ( Entity (entityVal),
     Handler,
-    PersistStoreWrite (delete),
     Textual (toLower),
     fromMaybe,
     selectList,

@@ -14,6 +14,11 @@ module Handler.WordForm where
 import Handler.Autocorrect
 import Import
 
+data Result = Result
+  { resultTitle :: Text,
+    resultExcerpt :: Text
+  }
+
 searchForm :: Html -> MForm Handler (FormResult Text, Widget)
 searchForm = renderDivs $ areq (searchField True) textSettings Nothing
   where
@@ -35,7 +40,15 @@ getWordFormR = do
   ((formRes, searchWidget), formEnctype) <- runFormGet searchForm
   searchResults <-
     case formRes of
-      FormSuccess qstring -> return $ noDupCandidates $ candidates wm (unpack . toLower $ qstring)
+      FormSuccess qstring ->
+        runSimDB $
+          forM (noDupCandidates (candidates wm (unpack . toLower $ qstring))) $ \can -> do
+            x <- selectFirst [WordsWord ==. pack can] []
+            case x of
+              Just entity ->
+                return $
+                  Result {resultTitle = wordsWord $ entityVal entity, resultExcerpt = wordsDefn $ entityVal entity}
+              Nothing -> return Result {resultTitle = pack can, resultExcerpt = ""}
       _ -> return []
   defaultLayout $ do
     $(widgetFile "WordRecommendation/wordForm")

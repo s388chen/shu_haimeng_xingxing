@@ -11,7 +11,6 @@
 
 module Handler.SentenceForm where
 
-import qualified Data.List
 import qualified Data.Map as Map
 import Handler.Autocorrect
 import Import

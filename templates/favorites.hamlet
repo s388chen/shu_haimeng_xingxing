@@ -1,6 +1,7 @@
-<h1>#{userIdent user}'s archive
+<h1>#{userIdent user}'s Favorites
 <div .ui.container>
 $if not $ null allWords
-    $forall word <- allWords
+    $forall result <- archives
         <div .result>
-            <a href="/word/#{archivedWord $ entityVal word}">#{archivedWord $ entityVal word}
+            <a href="/word/#{resultTitle result}">#{resultTitle result}
+            <div .excerpt>...#{resultExcerpt result}...

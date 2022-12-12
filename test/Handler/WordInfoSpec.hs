@@ -4,8 +4,6 @@
 module Handler.WordInfoSpec (spec) where
 
 import DictionaryDB
-import Handler.Autocorrect
-import Handler.WordInfo
 import TestImport
 
 spec :: Spec
