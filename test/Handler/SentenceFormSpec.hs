@@ -1,10 +1,25 @@
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+
 module Handler.SentenceFormSpec (spec) where
 
+import Foundation
 import TestImport
 
 spec :: Spec
 spec = withApp $ do
+  describe "getSentenceFormR" $ do
+    it "gives a 200 and display the correct form" $ do
+      get SentenceFormR
+      statusIs 200
+      htmlAnyContain "h1" " Leave your proofreading to us!"
+      htmlAnyContain "label" "Simply copy and paste your text into the box below for a easy online spelling check."
 
-    describe "getSentenceFormR" $ do
-        error "Spec not implemented: getSentenceFormR"
+  describe "invalid requests" $ do
+    it "400s when Post request - Invalid Method" $ do
+      request $ do
+        setMethod "POST"
+        setUrl SentenceFormR
+        addRequestHeader ("Content-Type", "application/json")
 
+      statusIs 405

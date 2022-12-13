@@ -10,7 +10,7 @@ spec = withApp $ do
   describe "Favorites page" $ do
     it "asserts no access to my-account for anonymous users" $ do
       get FavoritesR
-      statusIs 303
+      statusIs 403
 
     it "asserts access to my-account for authenticated users" $ do
       userEntity <- createUser "foo"
@@ -25,4 +25,5 @@ spec = withApp $ do
 
       get FavoritesR
       let (Entity _ user) = userEntity
-      htmlAnyContain ".username" . unpack $ userIdent user
+
+      htmlAnyContain "h1" (unpack (userIdent user))
