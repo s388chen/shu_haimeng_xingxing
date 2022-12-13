@@ -50,10 +50,12 @@ correction wm word = argmax (p wm) $ candidates wm word
 -- >>> candidates (Map.fromList[("corrected", 1)]) "korrectud"
 -- ["corrected","corrected"]
 
+-- remove duplicates
 noDupCandidates :: [String] -> [String]
 noDupCandidates = S.toList . S.fromList
 
 -- | Generate possible spelling corrections for @word@.
+-- this includes the same word, one edit away, transpose, shift, two edits away
 candidates :: Map.Map String Int -> String -> [String]
 candidates wm word = head $ filter (not . null) s
   where
@@ -102,7 +104,7 @@ transpose1 word = transposes
 
 -- | All possible edits that are two edits away from @word@.
 edits2 :: String -> [String]
-edits2 word = [e3 ++ e4 | e1 <- edits1 word, e2 <- transpose1 word, e3 <- edits1 e1, e4 <- edits1 e2]
+edits2 word = [e2 | e1 <- edits1 word, e2 <- edits1 e1]
 
 -- >>> length (noDupCandidates (edits1 "somthing"))
 -- 435
