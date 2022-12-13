@@ -15,6 +15,7 @@ module Handler.WordInfo where
 import Import
 import Text.Julius (RawJS (..))
 
+-- | Search in dictionary database and return the detailed information of a word
 getWordInfoR :: Text -> Handler Html
 getWordInfoR wordId =
   do
@@ -27,5 +28,6 @@ getWordInfoR wordId =
         setTitle "Recommendations of term #{wordId}"
         $(widgetFile "WordRecommendation/wordInfo")
 
+-- | Create a few IDs
 archivedIds :: (Text, Text, Text)
 archivedIds = ("js-archivedSubmit", "js-archivedText", "js-archivedList")

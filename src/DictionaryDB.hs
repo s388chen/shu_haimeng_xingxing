@@ -26,6 +26,7 @@ import Database.Persist.TH
 import System.Environment (getEnv)
 import Prelude
 
+-- | Create a new model for our dictionary database
 share
   [mkPersist sqlSettings]
   [persistLowerCase|
@@ -38,6 +39,7 @@ Words sql=words id=(word, type)
   deriving Show
 |]
 
+-- | Run all database records inside the function runSimDB
 runSimDB ::
   MonadUnliftIO m =>
   Control.Monad.Trans.Reader.ReaderT SqlBackend (Control.Monad.Logger.NoLoggingT (ResourceT m)) b ->

@@ -3,6 +3,7 @@ module Handler.Archive where
 import Import hiding (elem, map, (.))
 import Prelude (elem, map, (.))
 
+-- | Add a word to user's favorites
 postArchiveR :: Handler Value
 postArchiveR = do
   archive <- (requireCheckJsonBody :: Handler Archived)

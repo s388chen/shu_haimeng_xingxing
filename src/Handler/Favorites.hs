@@ -8,11 +8,13 @@ module Handler.Favorites where
 
 import Import
 
+-- | Start off by defining a Result datatype
 data Result = Result
   { resultTitle :: Text,
     resultExcerpt :: Text
   }
 
+-- | Return the results in a user's favorites
 getFavoritesR :: Handler Html
 getFavoritesR = do
   (userId, user) <- requireAuthPair

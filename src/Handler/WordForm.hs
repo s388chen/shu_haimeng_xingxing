@@ -14,11 +14,13 @@ module Handler.WordForm where
 import Handler.Autocorrect
 import Import
 
+-- | Define a new datatype for Result
 data Result = Result
   { resultTitle :: Text,
     resultExcerpt :: Text
   }
 
+-- | Define a search form for word input
 searchForm :: Html -> MForm Handler (FormResult Text, Widget)
 searchForm = renderDivs $ areq (searchField True) textSettings Nothing
   where
@@ -34,6 +36,7 @@ searchForm = renderDivs $ areq (searchField True) textSettings Nothing
             ]
         }
 
+-- | Retrieve all of the possible candidates after auto-correcting a word
 getWordFormR :: Handler Html
 getWordFormR = do
   wm <- wordsMap

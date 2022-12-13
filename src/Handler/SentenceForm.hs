@@ -15,6 +15,7 @@ import qualified Data.Map as Map
 import Handler.Autocorrect
 import Import
 
+-- | Define a search form for sentence input
 searchForm :: Html -> MForm Handler (FormResult Text, Widget)
 searchForm = renderDivs $ areq (searchField True) textSettings Nothing
   where
@@ -30,6 +31,7 @@ searchForm = renderDivs $ areq (searchField True) textSettings Nothing
             ]
         }
 
+-- | Retrieve the most possible result after auto-correcting a sentence
 getSentenceFormR :: Handler Html
 getSentenceFormR = do
   wm <- wordsMap

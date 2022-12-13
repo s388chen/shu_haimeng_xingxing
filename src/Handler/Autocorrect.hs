@@ -17,22 +17,12 @@ import Import
   )
 import Prelude hiding (words)
 
+-- | Create a map with all words in the dictionary and their lengths
 wordsMap :: Handler (Map.Map String Int)
 wordsMap = do
   allWords <- runSimDB $ selectList [] []
   let words' = filter (not . null) $ map (toLower . unpack . wordsWord . entityVal) allWords
    in return $ Map.fromList [(head l, length l) | l <- group (sort words')]
-
--- wordsMap2 :: Map.Map String Int
--- {-# NOINLINE wordsMap #-}
--- wordsMap2 = do
---   Map.fromList [(head l, length l) | l <- group (sort words')]
---   where
---     text = unsafePerformIO $ Prelude.readFile "big.txt"
---     words' = filter (not . null) . splitWhen (not . isAlpha) $ map Data.Char.toLower text
-
--- >>> Data.Map.lookup "a" wordsMap2
--- Just 53
 
 -- | Probability of @word@.
 p :: Map.Map String Int -> String -> Double
