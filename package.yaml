@@ -84,7 +84,7 @@ executables:
 # Test suite
 tests:
   autograd-test:
-    main: Spec.hs
+    main: Main.hs
     source-dirs: test
     ghc-options: -Wall
     dependencies:

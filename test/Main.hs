@@ -1,12 +1,13 @@
 module Main where
 
-import qualified AutocorrectTest
-import qualified Spec
+import AutocorrectTest
+import Spec
+import Test.Hspec.Runner
 
 main :: IO ()
 main = do
   putStrLn "*** Testing Autocorrect ***"
-  test_all
+  _ <- test_all
   qc
   putStrLn "*** Testing Specs ***"
   hspec Spec.spec
